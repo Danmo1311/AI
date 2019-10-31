@@ -1,14 +1,22 @@
 import traceback
 import pandas as pd
+import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from string import punctuation
 from nltk.corpus import stopwords
 from nltk import wordpunct_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import unidecode
+
+
 '''-----------------------------------------------------------'''
 '''                   Diego Cruz  @di3cruz                    '''
 '''-----------------------------------------------------------'''
+
+
+'''--------------------- utils ---------------------'''
+detokenizer = TreebankWordDetokenizer()
+nlp = spacy.load("es_core_news_sm")
 
 
 '''--------------------- Convert text to vectors --------'''
@@ -54,7 +62,6 @@ def fn_clean_simple_text(str, stop_word):
         # Remove stop words and punctuation
         words = [token for token in tokens if token not in stop_word]
         # Join words
-        detokenizer = TreebankWordDetokenizer()
         sentence = detokenizer.detokenize(words)
         # return clean text
         return sentence
@@ -91,6 +98,39 @@ def fn_data_frame_clean_text_df(df_clean, name_column):
         return df_clean
     except Exception as e:
         print("Error in function fn_data_frame_clean_text_df")
+        print("type error: " + str(e))
+        print(traceback.format_exc())
+        exit()
+
+
+'''---------- lemma text  --------'''
+
+
+def fn_lemma_simple_text(str):
+    try:
+        doc = nlp(str)
+        # Extract lemma
+        test= [token.lemma_ for token in doc]
+        # Join words
+        sentence = detokenizer.detokenize(test)
+        return sentence
+    except Exception as e:
+        print("Error in function fn_lemma_simple_text")
+        print("type error: " + str(e))
+        print(traceback.format_exc())
+        exit()
+
+
+'''---------- lemma text in data frame --------------------'''
+
+
+def fn_data_frame_lemma_text_df(df_lemma, name_column):
+    try:
+        # Remove stop words and punctuation
+        df_lemma[name_column] = df_lemma[name_column].apply(lambda x: fn_lemma_simple_text(x))
+        return df_lemma
+    except Exception as e:
+        print("Error in function fn_data_frame_lemma_text_df")
         print("type error: " + str(e))
         print(traceback.format_exc())
         exit()

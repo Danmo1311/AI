@@ -29,7 +29,7 @@ def fn_tdidf_vectorizer(df,name_column):
         # Create vocabulary with all the text
         encoderTf.fit(df[name_column])
         # Save all vocabulary in pickle object
-        vocabulary = open('vocabulary', 'ab')
+        vocabulary = open('vocabulary_model', 'ab')
         pickle.dump(encoderTf, vocabulary)
         vocabulary.close()
         # Convert each text into vector according to the vocabulary created

@@ -21,7 +21,7 @@ def fn_label_encoder(df, name_column):
     try:
         le.fit(df[name_column])
         # Save object label
-        encoder_label = open('vocabulary', 'ab')
+        encoder_label = open('label_encoder_model', 'ab')
         pickle.dump(le, encoder_label)
         encoder_label.close()
         return le

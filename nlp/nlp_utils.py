@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 from nltk import wordpunct_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import unidecode
-
+import pickle
 
 '''-----------------------------------------------------------'''
 '''                   Diego Cruz  @di3cruz                    '''
@@ -28,6 +28,10 @@ def fn_tdidf_vectorizer(df,name_column):
         encoderTf = TfidfVectorizer()
         # Create vocabulary with all the text
         encoderTf.fit(df[name_column])
+        # Save all vocabulary in pickle object
+        vocabulary = open('vocabulary', 'ab')
+        pickle.dump(encoderTf, vocabulary)
+        vocabulary.close()
         # Convert each text into vector according to the vocabulary created
         data_encoded = encoderTf.transform(df[name_column])
         df_encoded = pd.DataFrame(data_encoded.toarray(), columns=encoderTf.get_feature_names())

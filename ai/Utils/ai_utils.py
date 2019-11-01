@@ -2,6 +2,7 @@ import traceback
 import pandas as pd
 from sklearn import preprocessing
 from sklearn.preprocessing import LabelEncoder
+import pickle
 
 '''-----------------------------------------------------------'''
 '''                   Diego Cruz  @di3cruz                    '''
@@ -19,6 +20,10 @@ def fn_label_encoder(df, name_column):
     le = LabelEncoder()
     try:
         le.fit(df[name_column])
+        # Save object label
+        encoder_label = open('vocabulary', 'ab')
+        pickle.dump(le, encoder_label)
+        encoder_label.close()
         return le
     except Exception as e:
         print("Error in function fn_label_encoder")

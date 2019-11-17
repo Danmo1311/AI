@@ -15,7 +15,7 @@ layer_names = model.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in model.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
-# Cargamos la camara
+# Cargamos la cámara y aplicamos la detección de objetos
 camera = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_PLAIN
 starting_time = time.time()
@@ -28,11 +28,11 @@ while True:
         _, frame = camera.read()
         frame_id += 1
         height, width, channels = frame.shape
-        # Deteccion de objetos
+        # Detección de objetos
         blob = cv2.dnn.blobFromImage(frame, 0.00392, (416,416), (0, 0, 0), True, crop=False)
         model.setInput(blob)
         outs = model.forward(output_layers)
-        # Informacion que aparecera en pantalla
+        # Información que aparecerá en pantalla
         class_ids = []
         confidences = []
         boxes = []
@@ -42,7 +42,7 @@ while True:
                 class_id = np.argmax(scores)
                 confidence = scores[class_id]
                 if confidence > 0.2:
-                    # Object detected
+                    # Objeto detectado
                     center_x = int(detection[0] * width)
                     center_y = int(detection[1] * height)
                     w = int(detection[2] * width)
